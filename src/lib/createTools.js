@@ -43,7 +43,7 @@ async function createTools(client, assistantId, toolsConfig) {
       // Add delay before attempting attachment
       await new Promise(resolve => setTimeout(resolve, 1000));
 
-      // Attach the tool to the assistant using Twilio's example structure
+      // Attach the tool to the assistant
       console.log(`Attempting to attach tool ${tool.id} to assistant ${assistantId}`);
       
       await client.assistants.v1
