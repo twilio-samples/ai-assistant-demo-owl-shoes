@@ -46,12 +46,23 @@ async function createTools(client, assistantId, toolsConfig) {
       // Attach the tool to the assistant
       console.log(`Attempting to attach tool ${tool.id} to assistant ${assistantId}`);
       
-      await client.assistants.v1
-        .assistants(assistantId)
-        .assistantsTools(tool.id)
-        .create();
+      try {
+        await client.assistants.v1
+          .assistants(assistantId)
+          .assistantsTools(tool.id)
+          .create();
+        
+        console.log(`Tool ${config.name} attached successfully`);
+      } catch (attachError) {
+        // If we get an "Unexpected end of JSON input" error, this is actually a success (204 response)
+        if (attachError.message === 'Unexpected end of JSON input') {
+          console.log(`Tool ${config.name} attached successfully (204 response)`);
+        } else {
+          // If it's any other error, rethrow it
+          throw attachError;
+        }
+      }
 
-      console.log(`Tool ${config.name} attached successfully`);
       createdTools.push(tool);
 
     } catch (error) {
