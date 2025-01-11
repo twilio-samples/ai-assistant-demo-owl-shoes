@@ -10,47 +10,65 @@ async function createTools(client, assistantId, toolsConfig) {
   const createdTools = [];
 
   for (const [key, config] of Object.entries(toolsConfig)) {
-      try {
-          console.log(`Creating tool: ${config.name}`);
-          
-          // Create the tool
-          const tool = await client.assistants.v1.tools.create({
-              name: config.name,
-              type: config.type,
-              description: config.description,
-              enabled: true,
-              meta: {
-                  url: config.url,
-                  method: config.method,
-                  input_schema: config.schema ? 
-                      JSON.stringify({
-                          type: 'object',
-                          properties: Object.entries(config.schema).reduce((acc, [key, type]) => {
-                              acc[key] = { type };
-                              return acc;
-                          }, {})
-                      }) : 
-                      JSON.stringify({
-                          type: 'object',
-                          properties: {}
-                      })
-              }
-          });
-          
-          console.log(`Tool ${config.name} created successfully. ID: ${tool.id}`);
-          
-          // Attach the tool to the assistant using the correct id format
-          const assistantsTool = await client.assistants.v1
-              .assistants(assistantId)
-              .assistantsTools(tool.id)
-              .create();
-          
-          console.log(`Tool ${config.name} attached successfully. Attachment id: ${assistantsTool.sid}`);
-          createdTools.push(tool);
-      } catch (error) {
-          console.error(`Failed to create/attach tool ${config.name}:`, error);
-          throw error;
+    try {
+      console.log(`Creating tool: ${config.name}`);
+      
+      // Prepare the meta object with required input_schema
+      const meta = {
+        url: config.url,
+        method: config.method,
+        input_schema: 'export type Data = {}'  // Default empty schema
+      };
+
+      // If schema is provided in config, use it
+      if (config.schema) {
+        meta.input_schema = `export type Data = { ${
+          Object.entries(config.schema)
+            .map(([key, type]) => `${key}: ${type}`)
+            .join(', ')
+        } }`;
       }
+
+      // Create the tool
+      const tool = await client.assistants.v1.tools.create({
+        name: config.name,
+        type: config.type,
+        description: config.description,
+        enabled: true,
+        meta: meta
+      });
+      
+      console.log(`Tool ${config.name} created successfully. ID: ${tool.id}`);
+
+      // Add delay before attempting attachment
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Attach the tool to the assistant
+      console.log(`Attempting to attach tool ${tool.id} to assistant ${assistantId}`);
+      
+      try {
+        const assistantsTool = await client.assistants.v1
+          .assistants(assistantId)
+          .assistantsTools(tool.id)
+          .create();
+
+        console.log(`Tool ${config.name} attached successfully. SID: ${assistantsTool.sid}`);
+        createdTools.push({
+          ...tool,
+          attachmentSid: assistantsTool.sid
+        });
+      } catch (attachError) {
+        if (attachError.response && attachError.response.data) {
+          console.error('Attachment error response:', attachError.response.data);
+        } else {
+          console.error('Attachment error:', attachError.message);
+        }
+        throw attachError;
+      }
+    } catch (error) {
+      console.error(`Failed to handle tool ${config.name}:`, error);
+      throw error;
+    }
   }
 
   return createdTools;
