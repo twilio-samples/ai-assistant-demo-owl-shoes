@@ -9,7 +9,7 @@
     },
     "dependencies": {
         "dotenv": "^16.4.7",
-        "twilio": "^4.23.0"
+        "twilio": "^5.4.1"
     },
     "engines": {
         "node": ">=14.0.0"
