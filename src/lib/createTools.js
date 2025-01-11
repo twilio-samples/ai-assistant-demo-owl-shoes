@@ -2,11 +2,11 @@
 /**
  * Creates and attaches tools to the specified assistant
  * @param {object} client - Twilio client instance
- * @param {string} assistantSid - The assistant SID
+ * @param {string} assistantId - The assistant ID
  * @param {object} toolsConfig - Tool configurations
  * @returns {Promise<Array>} Created tools details
  */
-async function createTools(client, assistantSid, toolsConfig) {
+async function createTools(client, assistantId, toolsConfig) {
     const createdTools = [];
   
     for (const [key, config] of Object.entries(toolsConfig)) {
@@ -29,11 +29,11 @@ async function createTools(client, assistantSid, toolsConfig) {
               `export type Data = { \n /* insert your schema here. */ \n}`
           }
         });
-  
+        console.log(`Tool ${config.name} created successfully. ID: ${tool.id}`);
         // Attach the tool to the assistant
         await client.assistants.v1
-          .assistants(assistantSid)
-          .assistantsTools(tool.sid)
+          .assistants(assistantId)
+          .assistantsTools(tool.id)
           .create();
   
         console.log(`Tool ${config.name} created and attached successfully`);

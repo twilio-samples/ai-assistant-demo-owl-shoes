@@ -2,11 +2,11 @@
 /**
  * Creates and attaches knowledge bases to the specified assistant
  * @param {object} client - Twilio client instance
- * @param {string} assistantSid - The assistant SID
+ * @param {string} assistantId - The assistant SID
  * @param {object} knowledgeConfig - Knowledge base configurations
  * @returns {Promise<Array>} Created knowledge base details
  */
-async function createKnowledge(client, assistantSid, knowledgeConfig) {
+async function createKnowledge(client, assistantId, knowledgeConfig) {
     const createdKnowledge = [];
   
     for (const [key, config] of Object.entries(knowledgeConfig)) {
@@ -24,8 +24,8 @@ async function createKnowledge(client, assistantSid, knowledgeConfig) {
   
         // Attach the knowledge base to the assistant
         await client.assistants.v1
-          .assistants(assistantSid)
-          .assistantsKnowledge(knowledge.sid)
+          .assistants(assistantId)
+          .assistantsKnowledge(knowledge.id)
           .create();
   
         console.log(`Knowledge base ${config.name} created and attached successfully`);

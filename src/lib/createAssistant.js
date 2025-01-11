@@ -14,7 +14,7 @@ async function createAssistant(client, config) {
         personality_prompt: config.personality_prompt
       });
       
-      console.log('Assistant created successfully:', assistant.sid);
+      console.log('Assistant created successfully:', assistant.id);
       return assistant;
     } catch (error) {
       console.error('Failed to create assistant:', error);

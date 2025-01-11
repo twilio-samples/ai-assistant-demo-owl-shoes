@@ -30,21 +30,21 @@ async function deploy() {
     console.log('Step 1: Creating AI Assistant...');
     const assistant = await createAssistant(client, assistantConfig);
     console.log('✓ Assistant created successfully');
-    console.log('Assistant SID:', assistant.sid);
+    console.log('Assistant SID:', assistant.id);
     
     // Step 2: Create and attach tools
     console.log('\nStep 2: Creating and attaching tools...');
-    const tools = await createTools(client, assistant.sid, toolsConfig);
+    const tools = await createTools(client, assistant.id, toolsConfig);
     console.log(`✓ Successfully created and attached ${tools.length} tools`);
     
     // Step 3: Create and attach knowledge bases
     console.log('\nStep 3: Creating and attaching knowledge bases...');
-    const knowledge = await createKnowledge(client, assistant.sid, knowledgeConfig);
+    const knowledge = await createKnowledge(client, assistant.id, knowledgeConfig);
     console.log(`✓ Successfully created and attached ${knowledge.length} knowledge bases`);
     
     // Deployment summary
     console.log('\n=== Deployment Summary ===');
-    console.log('Assistant SID:', assistant.sid);
+    console.log('Assistant SID:', assistant.id);
     console.log('Tools created:', tools.length);
     console.log('Knowledge bases created:', knowledge.length);
     console.log('\nDeployment completed successfully! 🎉');
@@ -94,7 +94,7 @@ if (require.main === module) {
     .then((result) => {
       // Log final success message
       console.log('\nYou can now find your assistant in the Twilio Console:');
-      console.log(`https://www.twilio.com/console/assistant/${result.assistant.sid}`);
+      console.log(`https://www.twilio.com/console/assistant/${result.assistant.id}`);
       process.exit(0);
     })
     .catch((error) => {
