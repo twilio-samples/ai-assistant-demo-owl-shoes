@@ -1,0 +1,20 @@
+{
+    "name": "twilio-ai-assistant",
+    "version": "1.0.0",
+    "description": "Twilio AI Assistant Deployment Tool",
+    "main": "src/deploy.js",
+    "scripts": {
+        "deploy": "node src/deploy.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {
+        "dotenv": "^16.4.7",
+        "twilio": "^4.23.0"
+    },
+    "engines": {
+        "node": ">=14.0.0"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC"
+}
