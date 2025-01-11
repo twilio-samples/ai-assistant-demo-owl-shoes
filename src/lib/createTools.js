@@ -43,28 +43,17 @@ async function createTools(client, assistantId, toolsConfig) {
       // Add delay before attempting attachment
       await new Promise(resolve => setTimeout(resolve, 1000));
 
-      // Attach the tool to the assistant
+      // Attach the tool to the assistant using Twilio's example structure
       console.log(`Attempting to attach tool ${tool.id} to assistant ${assistantId}`);
       
-      try {
-        const assistantsTool = await client.assistants.v1
-          .assistants(assistantId)
-          .assistantsTools(tool.id)
-          .create();
+      await client.assistants.v1
+        .assistants(assistantId)
+        .assistantsTools(tool.id)
+        .create();
 
-        console.log(`Tool ${config.name} attached successfully. SID: ${assistantsTool.sid}`);
-        createdTools.push({
-          ...tool,
-          attachmentSid: assistantsTool.sid
-        });
-      } catch (attachError) {
-        if (attachError.response && attachError.response.data) {
-          console.error('Attachment error response:', attachError.response.data);
-        } else {
-          console.error('Attachment error:', attachError.message);
-        }
-        throw attachError;
-      }
+      console.log(`Tool ${config.name} attached successfully`);
+      createdTools.push(tool);
+
     } catch (error) {
       console.error(`Failed to handle tool ${config.name}:`, error);
       throw error;
