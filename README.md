@@ -85,14 +85,11 @@ twilio login
       - Copy the generated token
 
    The table includes fields for:
-   - Prompt: Defines the bot's role and personality
-   - User Profile: Customer information for personalization
+   - Customers: Customer information for personalization
    - Orders: Order history data
    - Inventory: Product catalog information
-   - Model: GPT model selection
-   - Voice: Text-to-speech voice selection
-   - Language: Default language setting
-   - Additional configuration options
+   - Surveys: CSAT surveys conducted by the Assistant
+   - Returns: Returns proccessed by the Assistant
 
 6. Configure environment variables:
 ```bash
