@@ -20,7 +20,10 @@ module.exports = {
       description: "Use this tool to look up the customers order. ALWAYS ask the user to confirm the last four characters of their order number to ensure you are referencing the correct one.",
       type: "WEBHOOK",
       method: "GET",
-      url: `https://${DOMAIN}/tools/order-lookup`
+      url: `https://${DOMAIN}/tools/order-lookup`,
+      schema: {
+        order_confirmation_digits: "string"
+      }
     },
     returnOrder: {
       name: "Return Order",
