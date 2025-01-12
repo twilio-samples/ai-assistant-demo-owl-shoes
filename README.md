@@ -113,7 +113,7 @@ twilio phone_number <your-twilio-number> \
 
 **Via Twilio Console:**
 1. Open your voice-capable phone number
-2. Set the "When a call comes in" webhook to: `https://<your-functions-domain>.twil.io/channels/voice/incoming-call`
+2. Set the "When a call comes in" function to: `https://<your-functions-domain>.twil.io/channels/voice/incoming-call`
 
 ### Messaging Channels
 
@@ -132,7 +132,7 @@ twilio phone_number <your-twilio-number> \
 #### WhatsApp
 
 1. Go to your WhatsApp Sandbox Settings in the Twilio Console
-2. Configure the "When a message comes in" webhook to: `https://<your-functions-domain>.twil.io/channels/messaging/incoming`
+2. Configure the "When a message comes in" function to: `https://<your-functions-domain>.twil.io/channels/messaging/incoming`
 
 **Note:** To use the same webhook for multiple assistants, add the AssistantSid as a parameter:
 ```
