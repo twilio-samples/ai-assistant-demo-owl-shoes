@@ -1,4 +1,4 @@
-# Twilio AI Assistant Deployment Tool
+# Twilio AI Assistant Deployment Tool - Owl Shoes
 
 A modular tool for deploying a Twilio AI Assistant with pre-configured tools and knowledge bases. This project provides a structured way to create and configure an AI Assistant for retail customer service.
 
@@ -97,25 +97,61 @@ twilio serverless:deploy
 npm run deploy
 ```
 
-## Configuration
+## Connecting Channels
 
-### Assistant Personality
-- Edit `prompts/assistant-prompt.md` to modify the assistant's behavior and personality
-- The prompt is written in markdown format for better organization
-- Changes require redeployment of the assistant
+After deploying your functions and assistant, you'll need to connect various Twilio channels. Here's how to set up each channel:
 
-### Tools Configuration
-- Tool settings are in `src/config/tools.js`
-- Each tool includes:
-  - Name and description
-  - Webhook URL (automatically configured using FUNCTIONS_DOMAIN)
-  - Input schema (if required)
-  - Usage rules and requirements
+### Voice Channel
 
-### Knowledge Base
-- Knowledge base configuration is in `src/config/knowledge.js`
-- Includes FAQ sources and usage instructions
-- Can be extended with additional knowledge sources
+Configure your Twilio voice number to use the AI Assistant:
+
+**Via Twilio CLI:**
+```bash
+twilio phone_number <your-twilio-number> \
+    --voice-url=https://<your-functions-domain>.twil.io/channels/voice/incoming-call
+```
+
+**Via Twilio Console:**
+1. Open your voice-capable phone number
+2. Set the "When a call comes in" webhook to: `https://<your-functions-domain>.twil.io/channels/voice/incoming-call`
+
+### Messaging Channels
+
+#### SMS
+
+**Via Twilio CLI:**
+```bash
+twilio phone_number <your-twilio-number> \
+    --sms-url=https://<your-functions-domain>.twil.io/channels/messaging/incoming
+```
+
+**Via Twilio Console:**
+1. Open your SMS-capable phone number or Messaging Service
+2. Set the "When a message comes in" webhook to: `https://<your-functions-domain>.twil.io/channels/messaging/incoming`
+
+#### WhatsApp
+
+1. Go to your WhatsApp Sandbox Settings in the Twilio Console
+2. Configure the "When a message comes in" webhook to: `https://<your-functions-domain>.twil.io/channels/messaging/incoming`
+
+**Note:** To use the same webhook for multiple assistants, add the AssistantSid as a parameter:
+```
+https://<your-functions-domain>.twil.io/channels/messaging/incoming?AssistantSid=AI1234561231237812312
+```
+
+### Conversations Channel
+
+Set up Twilio Conversations integration:
+
+1. Create a Conversations Service or use your default service
+2. Run this Twilio CLI command to configure the webhook:
+```bash
+twilio api:conversations:v1:services:configuration:webhooks:update \
+    --post-webhook-url=https://<your-functions-domain>.twil.io/channels/conversations/messageAdded \
+    --chat-service-sid=<your-conversations-service-sid> \
+    --filter=onMessageAdded
+```
+3. Follow the [Twilio Conversations documentation](https://www.twilio.com/docs/conversations/overview) to connect your preferred channels
 
 ## Tool Functions
 
@@ -130,8 +166,56 @@ The assistant uses several tool functions that need to be implemented:
    - GET request
    - Retrieves order information
    - Validates order ID
+   - Input schema: 
+     ```javascript
+     {
+       order_confirmation_digits: string //Last 4 digits of customers order
+     }
 
-[ADD MORE INFO HERE]
+3. Create Survey (`/tools/create-survey`)
+   - POST request
+   - Creates customer satisfaction survey records
+   - Captures rating and feedback
+   - Requires customer identification via x-identity header
+   - Input schema: 
+     ```javascript
+     {
+       rating: number,    // Required: 1-5 rating
+       feedback: string   // Optional: customer feedback
+     }
+     ```
+
+4. Order Return (`/tools/return-order`)
+   - POST request
+   - Initiates return process for delivered orders
+   - Validates order status and existing returns
+   - Creates return record and updates order
+   - Input schema:
+     ```javascript
+     {
+       order_id: string,      // Required: order identifier
+       return_reason: string  // Required: reason for return
+     }
+     ```
+
+5. Place Order (`/tools/place-order`)
+   - POST request
+   - Creates new orders using customer information
+   - Handles product lookup and pricing
+   - Calculates any applicable discounts
+   - Input schema:
+     ```javascript
+     {
+       product_id: string  // Required: product identifier
+     }
+     ```
+
+6. Product Inventory (`/tools/products`)
+   - GET request
+   - Retrieves complete product catalog
+   - Includes product details, pricing, and availability
+   - Used for product recommendations
+   - No input parameters required
 
 ## Development
 
