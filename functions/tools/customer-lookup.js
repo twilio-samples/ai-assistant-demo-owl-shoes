@@ -1,76 +1,66 @@
-const { createClient } = require('@supabase/supabase-js');
+const Airtable = require('airtable');
 
 exports.handler = async function (context, event, callback) {
   try {
-    // Supabase setup
-    const SUPABASE_URL = context.SUPABASE_URL;
-    const SUPABASE_KEY = context.SUPABASE_KEY;
-
-    if (!SUPABASE_URL || !SUPABASE_KEY) {
-      console.error('Missing Supabase configuration');
+    // Validate Airtable configuration
+    if (!context.AIRTABLE_API_KEY || !context.AIRTABLE_BASE_ID) {
       return callback(null, {
         status: 500,
-        message: 'Supabase configuration error. Please check environment variables.',
+        message: 'Airtable configuration error. Please check environment variables.',
       });
     }
 
-    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+    // Airtable setup
+    const base = new Airtable({apiKey: context.AIRTABLE_API_KEY}).base(context.AIRTABLE_BASE_ID);
 
-    // Extract and validate the x-identity header to use in DB Lookup
+    // Extract and validate the x-identity header
     const identityHeader = event.request.headers["x-identity"];
     if (!identityHeader) {
-      console.error('Missing x-identity header');
       return callback(null, {
         status: 400,
         message: 'Missing x-identity header. Provide email or phone in the format: "email:<email>" or "phone:<phone>".',
       });
     }
 
-    // Determine whether the x-identity header is for email or phone
-    let queryColumn, queryValue;
+    // Parse the identity header
+    let queryField, queryValue;
     if (identityHeader.startsWith('email:')) {
-      queryColumn = 'email';
+      queryField = 'email';
       queryValue = identityHeader.replace('email:', '').trim();
     } else if (identityHeader.startsWith('phone:')) {
-      queryColumn = 'phone';
+      queryField = 'phone';
       queryValue = identityHeader.replace('phone:', '').trim();
     } else {
-      console.error('Invalid x-identity format');
       return callback(null, {
         status: 400,
         message: 'Invalid x-identity format. Use "email:<email>" or "phone:<phone>".',
       });
     }
 
-    console.log(`Querying customers for ${queryColumn}: ${queryValue}`);
+    console.log(`Querying customers for ${queryField}: ${queryValue}`);
 
-    // Query the customers table in supabase
-    const { data, error } = await supabase
-      .from('customers') // Replace with your table name if different
-      .select('*')
-      .eq(queryColumn, queryValue);
+    // Query Airtable
+    const records = await base('customers')
+      .select({
+        filterByFormula: `{${queryField}} = '${queryValue}'`,
+        maxRecords: 1
+      })
+      .firstPage();
 
-    if (error) {
-      console.error('Supabase query error:', error.message);
-      return callback(null, {
-        status: 500,
-        message: 'Error querying customers table. Please try again later.',
-      });
-    }
-
-    if (data.length === 0) {
-      console.log(`No customer found for ${queryColumn}: ${queryValue}`);
+    if (!records || records.length === 0) {
+      console.log(`No customer found for ${queryField}: ${queryValue}`);
       return callback(null, {
         status: 404,
-        message: `No customer found for ${queryColumn}: ${queryValue}`,
+        message: `No customer found for ${queryField}: ${queryValue}`,
       });
     }
 
-    console.log(`Found ${data.length} customer for ${queryColumn}: ${queryValue}`);
+    console.log(`Found customer for ${queryField}: ${queryValue}`);
     return callback(null, {
       status: 200,
-      customer: data,
+      customer: records.map(record => record.fields),
     });
+
   } catch (err) {
     console.error('Unexpected error:', err.message);
     return callback(null, {
