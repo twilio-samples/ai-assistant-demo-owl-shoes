@@ -39,7 +39,7 @@ exports.handler = async function(context, event, callback) {
       twiml += `
         <Connect>
           <Assistant 
-            id="aia_asst_01944282-f2a6-7a76-8235-b9ea699a90b1"
+            id="aia_asst_YOUR_ASSISTANT_ID"
             welcomeGreeting="Hi ${customer.first_name}, thanks for calling Owl Shoes, How can I help you?"
             voice="en-US-Journey-O">
           </Assistant>
@@ -49,7 +49,7 @@ exports.handler = async function(context, event, callback) {
       twiml += `
         <Connect>
           <Assistant 
-            id="aia_asst_01944282-f2a6-7a76-8235-b9ea699a90b1"
+            id="aia_asst_YOUR_ASSISTANT_ID"
             welcomeGreeting="Thanks for calling Owl Shoes, How can I help you?"
             voice="en-US-Journey-O">
           </Assistant>
@@ -67,7 +67,7 @@ exports.handler = async function(context, event, callback) {
       <Response>
         <Connect>
           <Assistant 
-            id="aia_asst_01944282-f2a6-7a76-8235-b9ea699a90b1"
+            id="aia_asst_YOUR_ASSISTANT_ID"
             welcomeGreeting="Thanks for calling Owl Shoes, How can I help you?"
             voice="en-US-Journey-O">
           </Assistant>
