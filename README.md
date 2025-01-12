@@ -19,6 +19,8 @@ A modular tool for deploying a Twilio AI Assistant with pre-configured tools and
 - Node.js (v14 or higher)
 - Twilio account with AI Assistant access
 - Twilio Account SID and Auth Token
+- Twilio CLI installed globally (`npm install -g twilio-cli`)
+- Twilio Serverless Plugin (`twilio plugins:install @twilio-labs/plugin-serverless`)
 
 ## Project Structure
 
@@ -27,7 +29,10 @@ twilio-ai-assistant/
 ├── package.json
 ├── .env.example
 ├── .gitignore
+├── .twilioserverlessrc
 ├── README.md
+├── functions/
+│   └── tools/          # Serverless functions for each tool
 ├── prompts/
 │   └── assistant-prompt.md     # AI Assistant personality configuration
 └── src/
@@ -55,15 +60,39 @@ cd twilio-ai-assistant
 npm install
 ```
 
-3. Configure environment variables:
+3. Install Twilio CLI and Serverless Plugin (if not already installed):
 ```bash
-cp .env.example .env
-# Edit .env and add your Twilio credentials:
-# TWILIO_ACCOUNT_SID=your_account_sid
-# TWILIO_AUTH_TOKEN=your_auth_token
+npm install -g twilio-cli
+twilio plugins:install @twilio-labs/plugin-serverless
 ```
 
-4. Deploy the assistant:
+4. Login to your Twilio account:
+```bash
+twilio login
+```
+
+5. Configure environment variables:
+```bash
+cp .env.example .env
+# Edit .env and add your credentials:
+# TWILIO_ACCOUNT_SID=your_account_sid
+# TWILIO_AUTH_TOKEN=your_auth_token
+# AIRTABLE_API_KEY=your_airtable_api_key
+# AIRTABLE_BASE_ID=your_airtable_base_id
+```
+
+6. Deploy the serverless functions:
+```bash
+twilio serverless:deploy
+```
+
+7. Update your .env with the deployed functions domain:
+```bash
+# Add the domain from the serverless deploy output to your .env file:
+# FUNCTIONS_DOMAIN=your-domain-1234-dev.twil.io
+```
+
+8. Deploy the assistant:
 ```bash
 npm run deploy
 ```
@@ -79,7 +108,7 @@ npm run deploy
 - Tool settings are in `src/config/tools.js`
 - Each tool includes:
   - Name and description
-  - Webhook URL and method
+  - Webhook URL (automatically configured using FUNCTIONS_DOMAIN)
   - Input schema (if required)
   - Usage rules and requirements
 
@@ -88,39 +117,45 @@ npm run deploy
 - Includes FAQ sources and usage instructions
 - Can be extended with additional knowledge sources
 
-## Webhook Functions
+## Tool Functions
 
-The assistant uses several webhook functions that need to be implemented:
+The assistant uses several tool functions that need to be implemented:
 
-1. Customer Lookup (`/customer-lookup`)
+1. Customer Lookup (`/tools/customer-lookup`)
    - GET request
    - Looks up customer information
    - Returns customer details
 
-2. Order Lookup (`/order-lookup`)
+2. Order Lookup (`/tools/order-lookup`)
    - GET request
    - Retrieves order information
    - Validates order ID
 
-[Additional webhook documentation...]
+[ADD MORE INFO HERE]
 
 ## Development
 
 ### Adding New Tools
 
-1. Add tool configuration to `src/config/tools.js`:
+1. Create your function in the `functions/tools` directory
+2. Deploy the updated functions:
+```bash
+twilio serverless:deploy
+```
+3. Add tool configuration to `src/config/tools.js`:
 ```javascript
 newTool: {
   name: "Tool Name",
   description: "Tool description and rules",
   type: "WEBHOOK",
   method: "GET",
-  url: "https://your-domain.com/new-tool"
+  url: `https://${DOMAIN}/tools/your-new-tool`
 }
 ```
-
-2. Implement the corresponding webhook function
-3. Deploy and test the new tool
+4. Redeploy the assistant:
+```bash
+npm run deploy
+```
 
 ### Modifying Assistant Behavior
 
@@ -132,7 +167,7 @@ newTool: {
 
 1. Create test credentials in Twilio
 2. Use test credentials in `.env`
-3. Run deployment with test configuration
+3. Deploy functions and assistant separately for easier debugging
 
 ## Error Handling
 
