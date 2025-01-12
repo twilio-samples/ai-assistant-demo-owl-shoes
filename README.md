@@ -290,10 +290,3 @@ The deployment script includes comprehensive error handling:
 ## License
 
 MIT
-
-## Support
-
-For issues and questions:
-1. Check the [Issues](https://github.com/your-username/twilio-ai-assistant/issues) page
-2. Submit a new issue if needed
-3. Refer to [Twilio's Documentation](https://www.twilio.com/docs/assistants) for AI Assistant details
