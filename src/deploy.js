@@ -94,7 +94,7 @@ if (require.main === module) {
     .then((result) => {
       // Log final success message
       console.log('\nYou can now find your assistant in the Twilio Console:');
-      console.log(`https://www.twilio.com/console/assistant/${result.assistant.id}`);
+      console.log(`https://console.twilio.com/us1/develop/ai-assistants/assistants/${result.assistant.id}`);
       process.exit(0);
     })
     .catch((error) => {
