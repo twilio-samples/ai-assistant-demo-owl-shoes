@@ -84,12 +84,14 @@ twilio login
       - Give it a name and select the necessary scopes for your base
       - Copy the generated token
 
-   The table includes fields for:
+   The base includes tables for:
    - Customers: Customer information for personalization
    - Orders: Order history data
    - Inventory: Product catalog information
    - Surveys: CSAT surveys conducted by the Assistant
    - Returns: Returns proccessed by the Assistant
+
+   Its recommend you add yourself and some additional data to the table for demo purposes.
 
 6. Configure environment variables:
 ```bash
