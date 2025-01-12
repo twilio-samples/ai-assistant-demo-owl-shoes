@@ -21,6 +21,7 @@ A modular tool for deploying a Twilio AI Assistant with pre-configured tools and
 - Twilio Account SID and Auth Token
 - Twilio CLI installed globally (`npm install -g twilio-cli`)
 - Twilio Serverless Plugin (`twilio plugins:install @twilio-labs/plugin-serverless`)
+- Airtable account and API key
 
 ## Project Structure
 
@@ -71,7 +72,29 @@ twilio plugins:install @twilio-labs/plugin-serverless
 twilio login
 ```
 
-5. Configure environment variables:
+5. Configure Airtable:
+
+   a. Copy the Airtable base using [this link](https://airtable.com/appJpmkefU6JV7lfl/shr2bXI3Hv4bZkaeU)
+   
+   b. Once copied, you'll find the base ID in your Airtable URL (it looks like 'appXXXXXXXXXXXXX')
+   
+   c. Generate an Airtable access token:
+      - Go to your [Airtable account](https://airtable.com/create/tokens)
+      - Click "Create new token"
+      - Give it a name and select the necessary scopes for your base
+      - Copy the generated token
+
+   The table includes fields for:
+   - Prompt: Defines the bot's role and personality
+   - User Profile: Customer information for personalization
+   - Orders: Order history data
+   - Inventory: Product catalog information
+   - Model: GPT model selection
+   - Voice: Text-to-speech voice selection
+   - Language: Default language setting
+   - Additional configuration options
+
+6. Configure environment variables:
 ```bash
 cp .env.example .env
 # Edit .env and add your credentials:
@@ -81,18 +104,18 @@ cp .env.example .env
 # AIRTABLE_BASE_ID=your_airtable_base_id
 ```
 
-6. Deploy the serverless functions:
+7. Deploy the serverless functions:
 ```bash
 twilio serverless:deploy
 ```
 
-7. Update your .env with the deployed functions domain:
+8. Update your .env with the deployed functions domain:
 ```bash
 # Add the domain from the serverless deploy output to your .env file:
 # FUNCTIONS_DOMAIN=your-domain-1234-dev.twil.io
 ```
 
-8. Deploy the assistant:
+9. Deploy the assistant:
 ```bash
 npm run deploy
 ```
