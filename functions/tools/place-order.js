@@ -88,8 +88,12 @@ exports.handler = async function(context, event, callback) {
       }
     }
 
+    // Generate random 6-digit order ID
+    const orderId = Math.floor(100000 + Math.random() * 900000).toString();
+
     // Create order record
     const orderData = {
+      id: orderId,
       customer_id: customer.id,
       email: customer.email,
       phone: customer.phone,
@@ -122,7 +126,7 @@ exports.handler = async function(context, event, callback) {
     response.setStatusCode(200);
     response.setBody({
       message: 'Order created successfully',
-      order_id: newOrder[0].id,
+      order_id: orderId,
       order_details: {
         customer: {
           name: `${customer.first_name} ${customer.last_name}`,

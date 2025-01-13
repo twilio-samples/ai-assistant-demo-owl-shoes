@@ -86,7 +86,7 @@ exports.handler = async function (context, event, callback) {
 
     // Filter user's orders to find those matching the last 4 digits
     const matchingOrders = records.filter(record => {
-      const orderId = record.fields.order_id || '';
+      const orderId = record.fields.id || '';
       const orderIdLast4 = String(orderId).slice(-4);
       return orderIdLast4 === cleanDigits;
     });
@@ -107,7 +107,7 @@ exports.handler = async function (context, event, callback) {
       });
     }
 
-    console.log(`Found order with ID: ${matchingOrders[0].fields.order_id}`);
+    console.log(`Found order with ID: ${matchingOrders[0].fields.id}`);
     return callback(null, {
       status: 200,
       order: matchingOrders[0].fields,
