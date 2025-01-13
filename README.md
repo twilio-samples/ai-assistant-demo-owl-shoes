@@ -131,8 +131,10 @@ After deploying your functions and assistant, you'll need to connect various Twi
 
 ### Voice Channel
 
+:warning: **Add your Assistant ID to the incoming-call function**
+
 Configure your Twilio voice number to use the AI Assistant:
-:warning: **Ensure you add your Assistant ID to the incoming-call function**
+
 **Via Twilio CLI:**
 ```bash
 twilio phone_number <your-twilio-number> \
