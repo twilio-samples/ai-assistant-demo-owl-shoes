@@ -107,6 +107,12 @@ cp .env.example .env
 ```bash
 twilio serverless:deploy
 ```
+   After the function has been deployed you can update it to make it editable within the UI
+```bash
+twilio api:serverless:v1:services:update \
+   --sid YOUR_SERVICE_SID \
+   --ui-editable
+```   
 
 8. Update your .env with the deployed functions domain:
 ```bash
@@ -126,7 +132,7 @@ After deploying your functions and assistant, you'll need to connect various Twi
 ### Voice Channel
 
 Configure your Twilio voice number to use the AI Assistant:
-
+:warning: **Ensure you add your Assistant ID to the incoming-call function**
 **Via Twilio CLI:**
 ```bash
 twilio phone_number <your-twilio-number> \
