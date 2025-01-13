@@ -1,9 +1,3 @@
-<p align="center"><img src="docs/ai-assistants.png#gh-light-mode-only" height="150" alt="Twilio AI Assistants"/><img src="docs/ai-assistants-light.png#gh-dark-mode-only" height="150" alt="Twilio AI Assistants"/></p>
-<h1 align="center">Twilio AI Assistants Samples</h1>
-
-> [!NOTE]
-> Twilio AI Assistants is a [Twilio Alpha](https://twilioalpha.com) project that is currently in Developer Preview.
-
 # Twilio AI Assistant Deployment Tool - Owl Shoes
 
 A modular tool for deploying a Twilio AI Assistant with pre-configured tools and knowledge bases. This project provides a structured way to create and configure an AI Assistant for retail customer service.
