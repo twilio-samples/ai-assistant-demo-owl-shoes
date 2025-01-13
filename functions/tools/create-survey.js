@@ -32,6 +32,9 @@ exports.handler = async function(context, event, callback) {
     } else if (identityHeader.startsWith('phone:')) {
       queryField = 'phone';
       queryValue = identityHeader.replace('phone:', '').trim();
+    } else if (identityHeader.startsWith('whatsapp:')) {
+      queryField = 'phone';
+      queryValue = identityHeader.replace('whatsapp:', '').trim();
     } else {
       response.setStatusCode(400);
       response.setBody({ 
