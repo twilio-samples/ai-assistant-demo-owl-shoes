@@ -21,7 +21,7 @@ A modular tool for deploying a Twilio AI Assistant with pre-configured tools and
 - Twilio Account SID and Auth Token
 - [Twilio CLI](https://www.twilio.com/docs/twilio-cli/quickstart) installed globally (`npm install -g twilio-cli`)
 - [Twilio Serverless Plugin](https://twilio.com/docs/labs/serverless-toolkit) (`twilio plugins:install @twilio-labs/plugin-serverless`)
-- Airtable account and API key
+- Airtable account, [App ID](https://support.airtable.com/docs/finding-airtable-ids#finding-ids-in-the-airtable-api) and [API token](https://airtable.com/developers/web/guides/personal-access-tokens#creating-a-token)
 
 ## Project Structure
 
