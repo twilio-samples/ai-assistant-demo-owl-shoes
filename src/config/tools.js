@@ -22,7 +22,7 @@ module.exports = {
       method: "GET",
       url: `https://${DOMAIN}/tools/order-lookup`,
       schema: {
-        order_confirmation_digits: "string"
+        order_confirmation_digits: "string" //the last four characters of the order number
       }
     },
     returnOrder: {
@@ -32,8 +32,8 @@ module.exports = {
       method: "POST",
       url: `https://${DOMAIN}/tools/return-order`,
       schema: {
-        order_id: "string",
-        return_reason: "string"
+        order_id: "string", //the order id to return
+        return_reason: "string" //why the customer is returning the order
       }
     },
     customerSurvey: {
@@ -43,8 +43,8 @@ module.exports = {
       method: "POST",
       url: `https://${DOMAIN}/tools/create-survey`,
       schema: {
-        rating: "number",
-        feedback: "string"
+        rating: "number", //the rating the user gave 1-5
+        feedback: "string" //the feedback the user gave
       }
     },
     productInventory: {
@@ -61,7 +61,7 @@ module.exports = {
       method: "POST",
       url: `https://${DOMAIN}/tools/place-order`,
       schema: {
-        product_id: "string"
+        product_id: "string" //the product id to order
       }
     }
 };
