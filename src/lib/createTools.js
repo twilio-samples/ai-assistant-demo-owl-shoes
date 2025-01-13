@@ -22,11 +22,23 @@ async function createTools(client, assistantId, toolsConfig) {
 
       // If schema is provided in config, use it
       if (config.schema) {
-        meta.input_schema = `export type Data = { ${
-          Object.entries(config.schema)
-            .map(([key, type]) => `${key}: ${type}`)
-            .join(', ')
-        } }`;
+        // Build schema string with comments
+        const schemaProperties = Object.entries(config.schema)
+          .map(([key, type]) => {
+            // Check if the value contains a comment (indicated by //)
+            const [typeValue, ...commentParts] = type.split('//');
+            const comment = commentParts.join('//').trim();
+            
+            // If there's a comment, format it as a JSDoc comment
+            const commentString = comment ? `/** ${comment} */\n    ` : '';
+            
+            // Return the property with optional comment
+            return `${commentString}${key}: ${typeValue.trim()}`;
+          })
+          .join(',\n    ');
+
+        // Format the complete schema with proper indentation
+        meta.input_schema = `export type Data = {\n    ${schemaProperties}\n}`;
       }
 
       // Create the tool
