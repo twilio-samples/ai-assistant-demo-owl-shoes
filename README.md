@@ -19,8 +19,8 @@ A modular tool for deploying a Twilio AI Assistant with pre-configured tools and
 - Node.js (v14 or higher)
 - Twilio account with AI Assistant access
 - Twilio Account SID and Auth Token
-- Twilio CLI installed globally (`npm install -g twilio-cli`)
-- Twilio Serverless Plugin (`twilio plugins:install @twilio-labs/plugin-serverless`)
+- [Twilio CLI](https://www.twilio.com/docs/twilio-cli/quickstart) installed globally (`npm install -g twilio-cli`)
+- [Twilio Serverless Plugin](https://twilio.com/docs/labs/serverless-toolkit) (`twilio plugins:install @twilio-labs/plugin-serverless`)
 - Airtable account and API key
 
 ## Project Structure
