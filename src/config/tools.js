@@ -54,6 +54,13 @@ module.exports = {
       method: "GET",
       url: `https://${DOMAIN}/tools/products`
     },
+    sendToFelx: {
+      name: "Send to Flex",
+      description: "Use this tool when the user wants to speak with a supervisor or when you are not able to fulfill their request. ALWAYS tell the user you are transferring them to a Supervisor before using this tool.",
+      type: "WEBHOOK",
+      method: "GET",
+      url: `https://${DOMAIN}/tools/send-to-flex`
+    },
     placeOrder: {
       name: "Place Order",
       description: "User this tool to place an order, ALWAYS confirm with user if you'd like to place the order using the same billing and shipping information as their last order.",
