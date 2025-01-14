@@ -30,25 +30,45 @@ A modular tool for deploying a Twilio AI Assistant with pre-configured tools and
 
 ```
 twilio-ai-assistant/
-├── package.json
-├── .env.example
-├── .gitignore
-├── .twilioserverlessrc
-├── README.md
-├── functions/
-│   └── tools/          # Serverless functions for each tool
-├── prompts/
-│   └── assistant-prompt.md     # AI Assistant personality configuration
-└── src/
-    ├── config/
-    │   ├── assistant.js        # Assistant settings
-    │   ├── tools.js           # Tool configurations
-    │   └── knowledge.js       # Knowledge base settings
-    ├── lib/
-    │   ├── createAssistant.js # Assistant creation logic
-    │   ├── createTools.js     # Tools creation and attachment
-    │   └── createKnowledge.js # Knowledge base creation
-    └── deploy.js              # Main deployment script
+├── README.md                 # Project documentation and setup instructions
+├── LICENSE                   # MIT license file
+├── package.json             # Project dependencies and scripts
+├── .env.example             # Template for environment variables
+├── .twilioserverlessrc      # Twilio Serverless configuration
+├── functions/               # Serverless function implementations
+│   ├── channels/           # Channel-specific handlers
+│   │   ├── conversations/  # Twilio Conversations handlers
+│   │   │   ├── flex-webchat.protected.js    # Flex webchat integration
+│   │   │   ├── messageAdded.protected.js    # Message handling
+│   │   │   └── response.js                  # Response handling
+│   │   ├── messaging/      # SMS/WhatsApp handlers
+│   │   │   ├── incoming.protected.js        # Incoming message handling
+│   │   │   └── response.js                  # Response handling
+│   │   └── voice/         # Voice call handlers
+│   │       └── incoming-call.js             # Incoming call handling
+│   ├── front-end/         # Front-end integration endpoints
+│   │   ├── create-customer.js              # Customer creation endpoint
+│   │   └── create-order.js                 # Order creation endpoint
+│   └── tools/            # Assistant tool implementations
+│       ├── create-survey.js                # CSAT survey creation
+│       ├── customer-lookup.js              # Customer information lookup
+│       ├── order-lookup.js                 # Order status lookup
+│       ├── place-order.js                  # Order placement
+│       ├── products.js                     # Product catalog access
+│       ├── return-order.js                 # Return processing
+│       └── send-to-flex.js                 # Flex transfer handler
+├── prompts/              # Assistant configuration
+│   └── assistant-prompt.md                 # Core personality and behavior
+└── src/                 # Deployment and configuration
+    ├── deploy.js                           # Main deployment script
+    ├── config/         # Configuration modules
+    │   ├── assistant.js                    # Assistant settings
+    │   ├── knowledge.js                    # Knowledge base config
+    │   └── tools.js                        # Tool configurations
+    └── lib/            # Core functionality
+        ├── createAssistant.js              # Assistant creation
+        ├── createKnowledge.js              # Knowledge base setup
+        └── createTools.js                  # Tool creation and attachment
 ```
 
 ## Quick Start
