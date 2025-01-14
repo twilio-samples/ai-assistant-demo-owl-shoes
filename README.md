@@ -250,6 +250,20 @@ The assistant uses several tool functions that need to be implemented:
    - Used for product recommendations
    - No input parameters required
 
+7. Product Inventory (`/tools/send-to-flex`)
+   - POST request
+   - Transfers conversation to a flex queue
+
+## Connecting Assitant to Channels
+
+- [Conversations](https://www.twilio.com/docs/alpha/ai-assistants/code-samples/channel-conversations)
+- [SMS & Whatsapp](https://www.twilio.com/docs/alpha/ai-assistants/code-samples/channel-messaging)
+- [Conversations with React](https://www.twilio.com/docs/alpha/ai-assistants/code-samples/react)
+- [Transition to Flex](https://www.twilio.com/docs/alpha/ai-assistants/code-samples/transition-flex)
+- [Transition to Sudio](https://www.twilio.com/docs/alpha/ai-assistants/code-samples/transition-studio)
+- [Other Examples](https://github.com/twilio-labs/ai-assistants-samples)
+
+
 ## Development
 
 ### Adding New Tools
