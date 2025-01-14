@@ -7,9 +7,9 @@ const Airtable = require('airtable');
  */
 exports.handler = async function(context, event, callback) {
   try {
-    // Validate Airtable configuration
-    if (!context.AIRTABLE_API_KEY || !context.AIRTABLE_BASE_ID) {
-      throw new Error('Missing Airtable configuration');
+    // Validate required configuration
+    if (!context.AIRTABLE_API_KEY || !context.AIRTABLE_BASE_ID || !context.ASSISTANT_ID) {
+      throw new Error('Missing required configuration');
     }
 
     // Airtable setup
@@ -39,7 +39,7 @@ exports.handler = async function(context, event, callback) {
       twiml += `
         <Connect>
           <Assistant 
-            id="aia_asst_YOUR_ASSISTANT_ID"
+            id="${context.ASSISTANT_ID}"
             welcomeGreeting="Hi ${customer.first_name}, thanks for calling Owl Shoes, How can I help you?"
             voice="en-US-Journey-O">
           </Assistant>
@@ -49,7 +49,7 @@ exports.handler = async function(context, event, callback) {
       twiml += `
         <Connect>
           <Assistant 
-            id="aia_asst_YOUR_ASSISTANT_ID"
+            id="${context.ASSISTANT_ID}"
             welcomeGreeting="Thanks for calling Owl Shoes, How can I help you?"
             voice="en-US-Journey-O">
           </Assistant>
@@ -67,7 +67,7 @@ exports.handler = async function(context, event, callback) {
       <Response>
         <Connect>
           <Assistant 
-            id="aia_asst_YOUR_ASSISTANT_ID"
+            id="${context.ASSISTANT_ID}"
             welcomeGreeting="Thanks for calling Owl Shoes, How can I help you?"
             voice="en-US-Journey-O">
           </Assistant>
