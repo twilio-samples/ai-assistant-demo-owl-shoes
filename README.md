@@ -136,6 +136,7 @@ After deploying your functions and assistant, you'll need to connect various Twi
 - [SMS & Whatsapp](https://www.twilio.com/docs/alpha/ai-assistants/code-samples/channel-messaging)
 - [Conversations with React](https://www.twilio.com/docs/alpha/ai-assistants/code-samples/react)
 - [Transition to Flex](https://www.twilio.com/docs/alpha/ai-assistants/code-samples/transition-flex)
+- [Flex Voice Handoff] (https://docs.google.com/document/d/14RuOxt6FUAuc62A7BmeQFZWHr5WcXOoQZluZEF98GJA/edit?tab=t.0#heading=h.ws1skprcwwdh)
 - [Transition to Sudio](https://www.twilio.com/docs/alpha/ai-assistants/code-samples/transition-studio)
 - [Other Examples](https://github.com/twilio-labs/ai-assistants-samples)
 
