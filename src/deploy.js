@@ -1,16 +1,27 @@
 // src/deploy.js
 require('dotenv').config();
 const twilio = require('twilio');
+const readline = require('readline');
 const assistantConfig = require('./config/assistant');
 const toolsConfig = require('./config/tools');
 const knowledgeConfig = require('./config/knowledge');
 const createAssistant = require('./lib/createAssistant');
 const createTools = require('./lib/createTools');
 const createKnowledge = require('./lib/createKnowledge');
+const createVoiceIntel = require('./lib/createVoiceIntel');
+
+// Create readline interface for user input
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+// Promisify readline question
+const question = (query) => new Promise((resolve) => rl.question(query, resolve));
 
 /**
  * Main deployment script that orchestrates the creation of the assistant,
- * its tools, and knowledge bases
+ * its tools, knowledge bases, and optionally Voice Intelligence Service
  */
 async function deploy() {
   // Validate environment variables
@@ -41,28 +52,52 @@ async function deploy() {
     console.log('\nStep 3: Creating and attaching knowledge bases...');
     const knowledge = await createKnowledge(client, assistant.id, knowledgeConfig);
     console.log(`✓ Successfully created and attached ${knowledge.length} knowledge bases`);
+
+    // Step 4: Optional Voice Intelligence Service creation
+    const createVoiceIntelService = await question('\nWould you like to create a Voice Intelligence Service? (y/n): ');
+    let voiceIntelService = null;
+
+    if (createVoiceIntelService.toLowerCase() === 'y') {
+      console.log('\nStep 4: Creating Voice Intelligence Service...');
+      voiceIntelService = await createVoiceIntel(client);
+      console.log('✓ Voice Intelligence Service created successfully');
+      
+      // Update .env file with the Voice Intelligence Service SID
+      const fs = require('fs');
+      const envFilePath = '.env';
+      const envContent = fs.readFileSync(envFilePath, 'utf8');
+      const updatedContent = envContent + `\nINTEL_SERVICE_SID=${voiceIntelService.serviceSid}\n`;
+      fs.writeFileSync(envFilePath, updatedContent);
+      console.log('✓ Updated .env file with Voice Intelligence Service SID');
+    }
     
     // Deployment summary
     console.log('\n=== Deployment Summary ===');
     console.log('Assistant SID:', assistant.id);
     console.log('Tools created:', tools.length);
     console.log('Knowledge bases created:', knowledge.length);
+    if (voiceIntelService) {
+      console.log('Voice Intelligence Service SID:', voiceIntelService.serviceSid);
+    }
     console.log('\nDeployment completed successfully! 🎉');
     console.log('\nNext steps:');
     console.log('1. Visit the Twilio Console to view your assistant');
     console.log('2. Test the assistant functionality');
     console.log('3. Update webhook URLs if needed');
     
+    // Close readline interface
+    rl.close();
+
     return {
       assistant,
       tools,
-      knowledge
+      knowledge,
+      voiceIntelService
     };
   } catch (error) {
     console.error('\n❌ Deployment failed:');
     console.error('Error:', error.message);
     
-    // Provide helpful error context
     if (error.code) {
       console.error('Error Code:', error.code);
     }
@@ -70,13 +105,14 @@ async function deploy() {
       console.error('Status Code:', error.status);
     }
     
-    // Deployment recovery suggestions
     console.log('\nTroubleshooting suggestions:');
     console.log('1. Check your Twilio credentials');
     console.log('2. Verify your account has AI Assistant access');
     console.log('3. Ensure all webhook URLs are valid');
     console.log('4. Check for any duplicate resource names');
 
+    // Close readline interface
+    rl.close();
     throw error;
   }
 }
@@ -84,7 +120,7 @@ async function deploy() {
 // Add cleanup function for handling interruptions
 process.on('SIGINT', async () => {
   console.log('\n\nReceived interrupt signal. Cleaning up...');
-  // You could add cleanup logic here if needed
+  rl.close();
   process.exit(0);
 });
 
@@ -92,13 +128,11 @@ process.on('SIGINT', async () => {
 if (require.main === module) {
   deploy()
     .then((result) => {
-      // Log final success message
       console.log('\nYou can now find your assistant in the Twilio Console:');
       console.log(`https://console.twilio.com/us1/develop/ai-assistants/assistants/${result.assistant.id}`);
       process.exit(0);
     })
     .catch((error) => {
-      // Log error and exit with failure code
       console.error('\nDeployment failed. See error details above.');
       process.exit(1);
     });
