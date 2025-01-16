@@ -22,8 +22,6 @@ A modular tool for deploying a Twilio AI Assistant with pre-configured tools and
 - Node.js (v14 or higher)
 - Twilio account with AI Assistant access
 - Twilio Account SID and Auth Token
-- [Twilio CLI](https://www.twilio.com/docs/twilio-cli/quickstart) installed globally (`npm install -g twilio-cli`)
-- [Twilio Serverless Plugin](https://twilio.com/docs/labs/serverless-toolkit) (`twilio plugins:install @twilio-labs/plugin-serverless`)
 - Airtable account, [App ID](https://support.airtable.com/docs/finding-airtable-ids#finding-ids-in-the-airtable-api) and [API token](https://airtable.com/developers/web/guides/personal-access-tokens#creating-a-token)
 
 ## Project Structure
@@ -74,40 +72,33 @@ twilio-ai-assistant/
 ## Quick Start
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/your-username/ai-assistant-owl-shoes.git
 cd ai-assistant-demo-owl-shoes
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
-3. Install Twilio CLI and Serverless Plugin (if not already installed):
-```bash
-npm install -g twilio-cli
-twilio plugins:install @twilio-labs/plugin-serverless
-```
-
-4. Login to your Twilio account:
-```bash
-twilio login
-```
-
-5. Configure Airtable:
+3. Configure Airtable:
 
    a. Copy the Airtable base using [this link](https://airtable.com/appJpmkefU6JV7lfl/shr2bXI3Hv4bZkaeU)
-   
+
    b. Once copied, you'll find the base ID in your Airtable URL (it looks like 'appXXXXXXXXXXXXX')
-   
+
    c. Generate an Airtable access token:
-      - Go to your [Airtable account](https://airtable.com/create/tokens)
-      - Click "Create new token"
-      - Give it a name and select the necessary scopes for your base
-      - Copy the generated token
+
+   - Go to your [Airtable account](https://airtable.com/create/tokens)
+   - Click "Create new token"
+   - Give it a name and select the necessary scopes for your base
+   - Copy the generated token
 
    The base includes tables for:
+
    - Customers: Customer information for personalization
    - Orders: Order history data
    - Inventory: Product catalog information
@@ -116,7 +107,8 @@ twilio login
 
    Its recommend you add yourself and some additional data to the table for demo purposes.
 
-6. Configure environment variables:
+4. Configure environment variables:
+
 ```bash
 cp .env.example .env
 # Edit .env and add your credentials:
@@ -126,24 +118,8 @@ cp .env.example .env
 # AIRTABLE_BASE_ID=your_airtable_base_id
 ```
 
-7. Deploy the serverless functions:
-```bash
-twilio serverless:deploy
-```
-   After the function has been deployed you can update it to make it editable within the UI
-```bash
-twilio api:serverless:v1:services:update \
-   --sid YOUR_SERVICE_SID \
-   --ui-editable
-```   
+5. Deploy the assistant:
 
-8. Update your .env with the deployed functions domain:
-```bash
-# Add the domain from the serverless deploy output to your .env file:
-# FUNCTIONS_DOMAIN=your-domain-1234-dev.twil.io
-```
-
-9. Deploy the assistant:
 ```bash
 npm run deploy
 ```
@@ -167,18 +143,21 @@ After deploying your functions and assistant, you'll need to connect various Twi
 Configure your Twilio voice number to use the AI Assistant:
 
 **Via Twilio CLI:**
+
 ```bash
 twilio phone_number <your-twilio-number> \
     --voice-url=https://<your-functions-domain>.twil.io/channels/voice/incoming-call
 ```
+
 OR If Using Voice Intel.
+
 ```bash
 twilio phone_number <your-twilio-number> \
     --voice-url=https://<your-functions-domain>.twil.io/channels/voice/incoming-call-voice-intel
 ```
 
-
 **Via Twilio Console:**
+
 1. Open your voice-capable phone number
 2. Set the "When a call comes in" function to: `https://<your-functions-domain>.twil.io/channels/voice/incoming-call` or `https://<your-functions-domain>.twil.io/channels/voice/incoming-call-voice-intel`
 
@@ -187,12 +166,14 @@ twilio phone_number <your-twilio-number> \
 #### SMS
 
 **Via Twilio CLI:**
+
 ```bash
 twilio phone_number <your-twilio-number> \
     --sms-url=https://<your-functions-domain>.twil.io/channels/messaging/incoming
 ```
 
 **Via Twilio Console:**
+
 1. Open your SMS-capable phone number or Messaging Service
 2. Set the "When a message comes in" webhook to: `https://<your-functions-domain>.twil.io/channels/messaging/incoming`
 
@@ -202,6 +183,7 @@ twilio phone_number <your-twilio-number> \
 2. Configure the "When a message comes in" function to: `https://<your-functions-domain>.twil.io/channels/messaging/incoming`
 
 **Note:** To use the same webhook for multiple assistants, add the AssistantSid as a parameter:
+
 ```
 https://<your-functions-domain>.twil.io/channels/messaging/incoming?AssistantSid=AI1234561231237812312
 ```
@@ -212,12 +194,14 @@ Set up Twilio Conversations integration:
 
 1. Create a Conversations Service or use your default service
 2. Run this Twilio CLI command to configure the webhook:
+
 ```bash
 twilio api:conversations:v1:services:configuration:webhooks:update \
     --post-webhook-url=https://<your-functions-domain>.twil.io/channels/conversations/messageAdded \
     --chat-service-sid=<your-conversations-service-sid> \
     --filter=onMessageAdded
 ```
+
 3. Follow the [Twilio Conversations documentation](https://www.twilio.com/docs/conversations/overview) to connect your preferred channels
 
 ## Tool Functions
@@ -225,26 +209,30 @@ twilio api:conversations:v1:services:configuration:webhooks:update \
 The assistant uses several tool functions that need to be implemented:
 
 1. Customer Lookup (`/tools/customer-lookup`)
+
    - GET request
    - Looks up customer information
    - Returns customer details
 
 2. Order Lookup (`/tools/order-lookup`)
+
    - GET request
    - Retrieves order information
    - Validates order ID
-   - Input schema: 
+   - Input schema:
      ```javascript
      {
-       order_confirmation_digits: string //Last 4 digits of customers order
+       order_confirmation_digits: string; //Last 4 digits of customers order
      }
+     ```
 
 3. Create Survey (`/tools/create-survey`)
+
    - POST request
    - Creates customer satisfaction survey records
    - Captures rating and feedback
    - Requires customer identification via x-identity header
-   - Input schema: 
+   - Input schema:
      ```javascript
      {
        rating: number,    // Required: 1-5 rating
@@ -253,6 +241,7 @@ The assistant uses several tool functions that need to be implemented:
      ```
 
 4. Order Return (`/tools/return-order`)
+
    - POST request
    - Initiates return process for delivered orders
    - Validates order status and existing returns
@@ -266,6 +255,7 @@ The assistant uses several tool functions that need to be implemented:
      ```
 
 5. Place Order (`/tools/place-order`)
+
    - POST request
    - Creates new orders using customer information
    - Handles product lookup and pricing
@@ -273,11 +263,12 @@ The assistant uses several tool functions that need to be implemented:
    - Input schema:
      ```javascript
      {
-       product_id: string  // Required: product identifier
+       product_id: string; // Required: product identifier
      }
      ```
 
 6. Product Inventory (`/tools/products`)
+
    - GET request
    - Retrieves complete product catalog
    - Includes product details, pricing, and availability
@@ -294,10 +285,13 @@ The assistant uses several tool functions that need to be implemented:
 
 1. Create your function in the `functions/tools` directory
 2. Deploy the updated functions:
+
 ```bash
 twilio serverless:deploy
 ```
+
 3. Add tool configuration to `src/config/tools.js`:
+
 ```javascript
 newTool: {
   name: "Tool Name",
@@ -307,7 +301,9 @@ newTool: {
   url: `https://${DOMAIN}/tools/your-new-tool`
 }
 ```
+
 4. Redeploy the assistant:
+
 ```bash
 npm run deploy
 ```
@@ -327,6 +323,7 @@ npm run deploy
 ## Error Handling
 
 The deployment script includes comprehensive error handling:
+
 - Environment variable validation
 - Creation failure handling
 - Detailed error logging
