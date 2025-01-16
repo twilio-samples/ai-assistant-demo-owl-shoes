@@ -2,6 +2,7 @@
 require('dotenv').config();
 const twilio = require('twilio');
 const readline = require('readline');
+const fs = require('fs');
 const assistantConfig = require('./config/assistant');
 const toolsConfig = require('./config/tools');
 const knowledgeConfig = require('./config/knowledge');
@@ -18,6 +19,27 @@ const rl = readline.createInterface({
 
 // Promisify readline question
 const question = (query) => new Promise((resolve) => rl.question(query, resolve));
+
+// Helper function to update .env file
+const updateEnvFile = (key, value) => {
+  const envFilePath = '.env';
+  const envContent = fs.readFileSync(envFilePath, 'utf8');
+  const envLines = envContent.split('\n');
+  
+  // Check if key already exists
+  const keyIndex = envLines.findIndex(line => line.startsWith(`${key}=`));
+  
+  if (keyIndex !== -1) {
+    // Update existing key
+    envLines[keyIndex] = `${key}=${value}`;
+  } else {
+    // Add new key
+    envLines.push(`${key}=${value}`);
+  }
+  
+  fs.writeFileSync(envFilePath, envLines.join('\n'));
+  console.log(`✓ Updated .env file with ${key}`);
+};
 
 /**
  * Main deployment script that orchestrates the creation of the assistant,
@@ -43,6 +65,9 @@ async function deploy() {
     console.log('✓ Assistant created successfully');
     console.log('Assistant SID:', assistant.id);
     
+    // Save Assistant SID to .env
+    updateEnvFile('ASSISTANT_SID', assistant.id);
+    
     // Step 2: Create and attach tools
     console.log('\nStep 2: Creating and attaching tools...');
     const tools = await createTools(client, assistant.id, toolsConfig);
@@ -62,13 +87,8 @@ async function deploy() {
       voiceIntelService = await createVoiceIntel(client);
       console.log('✓ Voice Intelligence Service created successfully');
       
-      // Update .env file with the Voice Intelligence Service SID
-      const fs = require('fs');
-      const envFilePath = '.env';
-      const envContent = fs.readFileSync(envFilePath, 'utf8');
-      const updatedContent = envContent + `\nINTEL_SERVICE_SID=${voiceIntelService.serviceSid}\n`;
-      fs.writeFileSync(envFilePath, updatedContent);
-      console.log('✓ Updated .env file with Voice Intelligence Service SID');
+      // Save Voice Intelligence Service SID to .env
+      updateEnvFile('INTEL_SERVICE_SID', voiceIntelService.serviceSid);
     }
     
     // Deployment summary
