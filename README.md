@@ -171,10 +171,16 @@ Configure your Twilio voice number to use the AI Assistant:
 twilio phone_number <your-twilio-number> \
     --voice-url=https://<your-functions-domain>.twil.io/channels/voice/incoming-call
 ```
+OR If Using Voice Intel.
+```bash
+twilio phone_number <your-twilio-number> \
+    --voice-url=https://<your-functions-domain>.twil.io/channels/voice/incoming-call-voice-intel
+```
+
 
 **Via Twilio Console:**
 1. Open your voice-capable phone number
-2. Set the "When a call comes in" function to: `https://<your-functions-domain>.twil.io/channels/voice/incoming-call`
+2. Set the "When a call comes in" function to: `https://<your-functions-domain>.twil.io/channels/voice/incoming-call` or `https://<your-functions-domain>.twil.io/channels/voice/incoming-call-voice-intel`
 
 ### Messaging Channels
 
