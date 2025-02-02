@@ -5,6 +5,7 @@
     "main": "src/deploy.js",
     "scripts": {
         "deploy": "node src/deploy.js",
+        "redeploy": "node src/redeploy.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "dependencies": {
