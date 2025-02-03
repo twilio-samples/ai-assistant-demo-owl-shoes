@@ -1,0 +1,3 @@
+﻿id,items,total_amount,shipping_status,created_at,customer_id,email,phone,return_id
+139453,"[{""id"":""5"",""name"":""Night Owl Casual"",""size"":6,""price"":89.99,""quantity"":1,""image_url"":""https://images.unsplash.com/photo-1549298916-b41d501d3772""}]",89.99000000,delivered,2025-01-08 23:22,1,bert.owl@twilio.com,+12223334444,
+2XZ7JC4U,"[{""id"":5,""name"":""Night Owl Casual"",""price"":80.991,""quantity"":1,""image_url"":""https://images.unsplash.com/photo-1549298916-b41d501d3772"",""size"":""[6,7,8,9,10,11]"",""color"":""Black"",""category"":""Casual"",""brand"":""Owl Street""}]",80.99100000,delivered,2025-01-14 09:16,1,bert.owl@twilio.com,+12223334444,9

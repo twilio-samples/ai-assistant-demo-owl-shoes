@@ -1,0 +1,25 @@
+﻿id,created_at,customer_id,feedback,rating
+1,2025-01-09 02:32,1,You did a great job,4
+2,2025-01-14 09:23,1,You're amazing.,5
+3,2025-01-14 18:36,1,You were pretty amazing.,5
+4,2025-01-15 10:19,1,You did great.,5
+5,2025-01-23 11:50,5,Really easy to use.,5
+6,2025-01-23 11:54,5,The interaction was terrible.,1
+7,2025-01-23 12:32,5,Great help with order and recommendations.,5
+8,2025-01-29 17:38,1,Hi. You were awesome.,5
+9,2025-01-29 19:09,1,Slow tool response.,2
+10,2025-01-29 19:35,1,You were pretty good.,3
+11,2025-01-29 19:42,1,"Great service, quick response.",5
+12,2025-01-29 19:47,1,No additional feedback.,5
+13,2025-01-29 19:59,1,Quick and helpful response on order status.,5
+14,2025-01-29 20:00,1,"Great service, very helpful.",5
+15,2025-01-29 20:02,1,You did amazing.,3
+16,2025-01-29 20:04,1,No additional feedback provided.,1
+17,2025-01-29 20:11,1,No additional feedback provided.,3
+18,2025-01-29 20:15,1,You did amazing.,5
+19,2025-01-29 20:24,1,No additional feedback provided.,5
+20,2025-01-30 21:17,1,No additional comments.,3
+21,2025-01-31 15:12,1,You did amazing.,4
+22,2025-01-31 15:15,1,No additional feedback provided.,4
+23,2025-01-31 15:43,1,User was satisfied with the service and return process.,5
+24,2025-01-31 15:45,1,No additional feedback.,4

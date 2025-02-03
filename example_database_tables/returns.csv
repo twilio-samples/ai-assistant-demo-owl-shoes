@@ -1,0 +1,3 @@
+﻿id,order_id,customer_id,reason,status,refund_amount,created_at,updated_at
+7,707648,1,They didn't fit.,submitted,80.99,2025-01-23 14:09,2025-01-23 14:09
+9,2XZ7JC4U,1,"sizing issue, didn't fit",submitted,80.99,2025-01-31 15:45,2025-01-31 15:45
