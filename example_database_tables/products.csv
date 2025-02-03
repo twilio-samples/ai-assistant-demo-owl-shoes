@@ -1,0 +1,9 @@
+﻿id,name,description,price,image_url,category,brand,size,color,created_at,current_discount
+1,Forest Hiker,Durable hiking boots for outdoor adventures,159.99,https://images.unsplash.com/photo-1520639888713-7851133b1ed0,Hiking,Owl Outdoor,"[8,9,10,11]",Brown,2025-01-07 15:15,
+2,Owl Flex,Flexible training shoes for gym workouts,99.99,https://images.unsplash.com/photo-1605348532760-6753d2c43329,Training,Owl Sports,"[8,9,10,11]",Purple,2025-01-07 15:15,
+3,Owl Air Max,Maximum cushioning for superior comfort,149.99,https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb,Athletic,Owl Sports,"[8,9,10,11,12]",Red,2025-01-07 15:15,
+4,Wisdom Walker,Classic walking shoes with modern technology,79.99,https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a,Walking,Owl Comfort,"[7,8,9,10]",Gray,2025-01-07 15:15,
+5,Night Owl Casual,Comfortable casual sneakers for everyday wear,89.99,https://images.unsplash.com/photo-1549298916-b41d501d3772,Casual,Owl Street,"[6,7,8,9,10,11]",Black,2025-01-07 15:15,10% Off
+6,Owl Runner Pro,Lightweight running shoes perfect for marathons,129.99,https://images.unsplash.com/photo-1542291026-7eec264c27ff,Running,Owl Sports,"[7,8,9,10,11,12]",Blue,2025-01-07 15:15,20% Off
+7,Midnight Racer,Speed-oriented running shoes with owl-inspired design,139.99,https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa,Running,Owl Sports,"[7,8,9,10,11]",Black,2025-01-07 15:15,
+8,Urban Owl,Stylish urban sneakers for the fashion-conscious,119.99,https://images.unsplash.com/photo-1552346154-21d32810aba3,Fashion,Owl Street,"[6,7,8,9,10]",White,2025-01-07 15:15,
