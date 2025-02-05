@@ -118,7 +118,7 @@ async function deploy() {
       console.log('✓ Voice Intelligence Service created successfully');
 
       // Save Voice Intelligence Service SID to .env
-      updateEnvFile('INTEL_SERVICE_SID', voiceIntelService.serviceSid);
+      updateEnvFile('VOICE_INTEL_SERVICE_SID', voiceIntelService.serviceSid);
     }
 
     // Step 6: Finishing deployiment configuration
@@ -131,7 +131,7 @@ async function deploy() {
       ASSISTANT_ID: assistant.id,
     };
     if (voiceIntelService?.serviceSid) {
-      variables['INTEL_SERVICE_SID'] = voiceIntelService.serviceSid;
+      variables['VOICE_INTEL_SERVICE_SID'] = voiceIntelService.serviceSid;
     }
 
     await serverlessClient.setEnvironmentVariables({
