@@ -20,7 +20,7 @@ A modular tool for deploying a Twilio AI Assistant with pre-configured tools and
 ## Prerequisites
 
 - Node.js (v14 or higher)
-- Twilio account with AI Assistant access
+- Twilio account with AI Assistant access (Ensure you accept the Terms and Conditions in the Twilio Console by visiting the AI Assistants page before running the script.)
 - Twilio Account SID and Auth Token
 - Airtable account, [App ID](https://support.airtable.com/docs/finding-airtable-ids#finding-ids-in-the-airtable-api) and [API token](https://airtable.com/developers/web/guides/personal-access-tokens#creating-a-token)
 
