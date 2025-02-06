@@ -37,7 +37,7 @@ exports.handler = async function(context, event, callback) {
     twiml += `
       <Start>
         <Transcription 
-          intelligenceService="${context.INTEL_SERVICE_SID}"/>
+          intelligenceService="${context.VOICE_INTEL_SERVICE_SID}"/>
       </Start>`;
     
     if (records && records.length > 0) {
@@ -74,7 +74,7 @@ exports.handler = async function(context, event, callback) {
       <Response>
         <Start>
           <Transcription 
-            intelligenceService="${context.INTEL_SERVICE_SID}"/>
+            intelligenceService="${context.VOICE_INTEL_SERVICE_SID}"/>
         </Start>
         <Connect>
           <Assistant 
