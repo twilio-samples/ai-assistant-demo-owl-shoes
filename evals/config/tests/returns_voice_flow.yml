@@ -1,0 +1,69 @@
+description: Returns Voice Flow Tests
+
+providers:
+  - id: package:@twilio-alpha/assistants-eval:TwilioAgentProvider
+    config:
+      assistantId: aia_asst_019442fd-fc8e-7ecb-95ca-78591e4483a9
+
+defaultTest:
+  vars:
+    runId: package:@twilio-alpha/assistants-eval:variableHelpers.runId
+    identity: 'phone:+12062271647'
+    sessionPrefix: 'retail-ai-'
+
+tests:
+  - description: "Initiate Mail Return"
+    vars:
+      prompt: "I want to return an item by mail"
+      sessionId: "{{sessionPrefix}}returns-voice-flow"
+    options:
+      runSerially: true
+    assert:
+      - type: contains-any
+        value:
+          - "store credit"
+          - "refund options"
+      - type: contains-any
+        value:
+          - "would you like"
+          - "prefer"
+
+  - description: "Accept Store Credit"
+    vars:
+      prompt: "Yes, store credit is fine"
+      sessionId: "{{sessionPrefix}}returns-voice-flow"
+    options:
+      runSerially: true
+    assert:
+      - type: contains-any
+        value:
+          - "instructions"
+          - "steps"
+          - "process"
+      - type: contains-any
+        value:
+          - "mail"
+          - "return label"
+          - "shipping"
+
+  - description: "Processing Time Information"
+    vars:
+      prompt: "How long will it take to process?"
+      sessionId: "{{sessionPrefix}}returns-voice-flow"
+    options:
+      runSerially: true
+    assert:
+      - type: contains-any
+        value:
+          - "days"
+          - "weeks"
+          - "processing time"
+      - type: contains-any
+        value:
+          - "credit"
+          - "refund"
+      - type: contains-any
+        value:
+          - "anything else"
+          - "help"
+          - "questions" 

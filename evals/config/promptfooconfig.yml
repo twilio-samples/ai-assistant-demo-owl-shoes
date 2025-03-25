@@ -1,0 +1,35 @@
+description: Retail AI Assistant Evaluation Test Suite
+maxConcurrency: 5
+
+# Import test files
+imports:
+  - tests/*.yml
+  - vars/*.yml
+
+# Default configuration for all tests
+defaultTest:
+  vars:
+    $import: vars/common.yml
+  
+# Target configuration
+targets:
+  - id: package:@twilio-alpha/assistants-eval:TwilioAgentProvider
+    config:
+      assistantId: ${ASSISTANT_ID}
+
+tests:
+  - file: ./tests/order_status_flow.yml
+    vars:
+      $import: vars/common.yml
+  - file: ./tests/returns_whatsapp_flow.yml
+    vars:
+      $import: vars/common.yml
+  - file: ./tests/returns_voice_flow.yml
+    vars:
+      $import: vars/common.yml
+  - file: ./tests/price_adjustment_flow.yml
+    vars:
+      $import: vars/common.yml
+  - file: ./tests/order_management_flow.yml
+    vars:
+      $import: vars/common.yml

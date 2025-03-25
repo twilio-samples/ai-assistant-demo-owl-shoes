@@ -1,0 +1,64 @@
+description: Price Adjustment Flow Tests
+
+providers:
+  - id: package:@twilio-alpha/assistants-eval:TwilioAgentProvider
+    config:
+      assistantId: aia_asst_019442fd-fc8e-7ecb-95ca-78591e4483a9
+
+defaultTest:
+  vars:
+    runId: package:@twilio-alpha/assistants-eval:variableHelpers.runId
+    identity: 'phone:+12062271647'
+    sessionPrefix: 'retail-ai-'
+
+tests:
+  - description: "Request Price Adjustment"
+    vars:
+      prompt: "I need a price adjustment for my order"
+      sessionId: "{{sessionPrefix}}price-adjustment-flow"
+    options:
+      runSerially: true
+    assert:
+      - type: contains-any
+        value:
+          - "which items"
+          - "select items"
+          - "which products"
+      - type: contains-any
+        value:
+          - "price adjustment"
+          - "adjust the price"
+
+  - description: "Specify Items for Adjustment"
+    vars:
+      prompt: "I want to adjust the price for the blue shirt and black pants"
+      sessionId: "{{sessionPrefix}}price-adjustment-flow"
+    options:
+      runSerially: true
+    assert:
+      - type: contains-any
+        value:
+          - "store credit"
+          - "credit option"
+      - type: contains-any
+        value:
+          - "would you like"
+          - "prefer"
+
+  - description: "Decline Store Credit"
+    vars:
+      prompt: "I don't want store credit"
+      sessionId: "{{sessionPrefix}}price-adjustment-flow"
+    options:
+      runSerially: true
+    assert:
+      - type: contains-any
+        value:
+          - "transfer"
+          - "connect"
+          - "agent"
+      - type: contains-any
+        value:
+          - "human"
+          - "representative"
+          - "specialist" 

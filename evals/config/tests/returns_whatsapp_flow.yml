@@ -1,0 +1,65 @@
+description: Returns WhatsApp Flow Tests
+
+providers:
+  - id: package:@twilio-alpha/assistants-eval:TwilioAgentProvider
+    config:
+      assistantId: aia_asst_019442fd-fc8e-7ecb-95ca-78591e4483a9
+
+defaultTest:
+  vars:
+    runId: package:@twilio-alpha/assistants-eval:variableHelpers.runId
+    identity: 'whatsapp:+12062271647'
+    sessionPrefix: 'retail-ai-'
+
+tests:
+  - description: "Initiate Return Without Order Number"
+    vars:
+      prompt: "I need to return the blue sweater I bought"
+      sessionId: "{{sessionPrefix}}returns-whatsapp-flow"
+    options:
+      runSerially: true
+    assert:
+      - type: contains-any
+        value:
+          - "reason"
+          - "why"
+          - "what's wrong"
+      - type: contains-any
+        value:
+          - "return"
+          - "process"
+
+  - description: "Specify Return Reason"
+    vars:
+      prompt: "The product is damaged"
+      sessionId: "{{sessionPrefix}}returns-whatsapp-flow"
+    options:
+      runSerially: true
+    assert:
+      - type: contains-any
+        value:
+          - "photo"
+          - "picture"
+          - "image"
+      - type: contains-any
+        value:
+          - "damage"
+          - "condition"
+
+  - description: "Photo Request Response"
+    vars:
+      prompt: "Ok I've sent it"
+      sessionId: "{{sessionPrefix}}returns-whatsapp-flow"
+    options:
+      runSerially: true
+    assert:
+      - type: contains-any
+        value:
+          - "agent"
+          - "review"
+          - "process"
+      - type: contains-any
+        value:
+          - "transfer"
+          - "forward"
+          - "send" 

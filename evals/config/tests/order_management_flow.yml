@@ -1,0 +1,45 @@
+description: Order Management Flow Tests
+
+providers:
+  - id: package:@twilio-alpha/assistants-eval:TwilioAgentProvider
+    config:
+      assistantId: aia_asst_019442fd-fc8e-7ecb-95ca-78591e4483a9
+
+defaultTest:
+  vars:
+    runId: package:@twilio-alpha/assistants-eval:variableHelpers.runId
+    identity: 'phone:+12062271647'
+    sessionPrefix: 'retail-ai-'
+
+tests:
+  - description: "Ask About Recent Order"
+    vars:
+      prompt: "Where is my order?"
+      sessionId: "{{sessionPrefix}}order-management-flow"
+    options:
+      runSerially: true
+    assert:
+      - type: contains-any
+        value:
+          - "recent order"
+          - "latest order"
+          - "found your order"
+      - type: contains-any
+        value:
+          - "status"
+          - "tracking"
+      - type: contains
+        value: "text message"
+        
+  - description: "Confirm Text Message Receipt"
+    vars:
+      prompt: "Yes, I received the text message"
+      sessionId: "{{sessionPrefix}}order-management-flow"
+    options:
+      runSerially: true
+    assert:
+      - type: contains-any
+        value:
+          - "help"
+          - "anything else"
+          - "assist" 
