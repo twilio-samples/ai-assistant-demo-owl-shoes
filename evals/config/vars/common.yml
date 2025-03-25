@@ -1,0 +1,9 @@
+vars:
+  # Common helper functions
+  runId: package:@twilio-alpha/assistants-eval:variableHelpers.runId
+  
+  # Common test identities
+  defaultIdentity: 'phone:+12062271647'
+  
+  # Common session patterns
+  defaultSessionPrefix: retail-ai- 

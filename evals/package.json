@@ -1,0 +1,24 @@
+{
+  "name": "evals",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "eval": "npm run eval:all",
+    "eval:all": "npm run eval:order; npm run eval:returns-whatsapp; npm run eval:returns-voice; npm run eval:price-adjustment; npm run eval:order-management",
+    "eval:order": "env-cmd -f .env promptfoo eval -c config/tests/order_status_flow.yml",
+    "eval:returns-whatsapp": "env-cmd -f .env promptfoo eval -c config/tests/returns_whatsapp_flow.yml",
+    "eval:returns-voice": "env-cmd -f .env promptfoo eval -c config/tests/returns_voice_flow.yml",
+    "eval:price-adjustment": "env-cmd -f .env promptfoo eval -c config/tests/price_adjustment_flow.yml",
+    "eval:order-management": "env-cmd -f .env promptfoo eval -c config/tests/order_management_flow.yml",
+    "view": "promptfoo view"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@twilio-alpha/assistants-eval": "^0.1.1",
+    "promptfoo": "^0.104.4",
+    "env-cmd": "^10.1.0"
+  }
+}

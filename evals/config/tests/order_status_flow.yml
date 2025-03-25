@@ -1,0 +1,64 @@
+description: Order Status Flow Tests
+
+providers:
+  - id: package:@twilio-alpha/assistants-eval:TwilioAgentProvider
+    config:
+      assistantId: aia_asst_019442fd-fc8e-7ecb-95ca-78591e4483a9
+
+defaultTest:
+  vars:
+    runId: package:@twilio-alpha/assistants-eval:variableHelpers.runId
+    identity: 'phone:+12062271647'
+    sessionPrefix: 'retail-ai-'
+
+tests:
+  - description: "Initial Order Location Check"
+    vars:
+      prompt: "Where is my order?"
+      sessionId: "{{sessionPrefix}}order-status-flow"
+    options:
+      runSerially: true
+    assert:
+      - type: contains-any
+        value:
+          - "New Finch Trench Coat"
+          - "The Effortless Pant Crepette"
+      - type: contains-any
+        value:
+          - "?"
+          - "questions"
+      - type: contains-any
+        value:
+          - "confirm"
+          - "correct"
+
+  - description: "Order Confirmation and Status"
+    vars:
+      prompt: "Yes, that is the correct order."
+      sessionId: "{{sessionPrefix}}order-status-flow"
+    options:
+      runSerially: true
+    assert:
+      - type: contains-any
+        value:
+          - "processing"
+          - "status"
+      - type: contains-any
+        value:
+          - "help"
+          - "anything else"
+          - "assist"
+
+  - description: "Final Feedback Request"
+    vars:
+      prompt: "Nope, thats it, thank you"
+      sessionId: "{{sessionPrefix}}order-status-flow"
+    options:
+      runSerially: true
+    assert:
+      - type: contains-any
+        value:
+          - "rate"
+          - "1-5"
+          - "feedback"
+          - "experience" 
